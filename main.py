@@ -1,4 +1,7 @@
 from flask import Flask, request, jsonify
+from enum import Enum
+    
+plan_types = ["standard", "deluxe"]  
 
 app = Flask(__name__)
 
@@ -16,22 +19,27 @@ def subscriptions():
         data = request.get_json()
         email = (data.get("email") or "").strip()
         name = (data.get("name") or "").strip()
-        plan = (data.get("plan") or "").strip()
+        plan = (data.get("plan") or "").strip().lower()
 
         if "@" not in email:
-            return jsonify({"error":"email must contain an @"}), 400
+            return jsonify({"error": "El email debe contener @"}), 400
         if not name:
-            return jsonify({"error":"Name cannot be empty"})
+            return jsonify({"error": "Name cannot be empty"}), 400
         if not plan:
-            return jsonify({"error":"plan cannot be empty"})
+            return jsonify({"error": "plan cannot be empty"}), 400
+            
+        if plan not in plan_types:
+            return jsonify({
+                "error": f"Only valid plans are: {plan_types}"
+            }), 400
 
         new_subscription = {
             "id": subscription_id,
-            "email": data["email"],
-            "name": data["name"],
-            "plan": data["plan"]
+            "email": email,
+            "name": name,
+            "plan": plan
         }
-        
+
         subscription_id += 1
         subscriptions_list.append(new_subscription)
         return jsonify(new_subscription), 201
