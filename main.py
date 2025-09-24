@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from enum import Enum
     
 plan_types = ["standard", "deluxe"]  
 
@@ -43,6 +42,15 @@ def subscriptions():
         subscription_id += 1
         subscriptions_list.append(new_subscription)
         return jsonify(new_subscription), 201
+    
+
+@app.route("/subscriptions/<int:subscription_id>", methods=["GET"])
+def get_subscription_with_id(subscription_id):
+    for subscription in subscriptions_list:
+        if subscription["id"] == subscription_id:
+            return jsonify(subscription), 200
+    return jsonify({"error": "Subscription not found"}), 404
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

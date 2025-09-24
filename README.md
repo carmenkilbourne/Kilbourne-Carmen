@@ -6,3 +6,4 @@
  4. Created a list to manage all the subscriptions and a autoincremented id.
  5. Implemented the minimal validations.
  6. Restricted the allowed values of plan.
+ 7. Added the method to get subscription by id.
