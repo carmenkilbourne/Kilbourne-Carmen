@@ -50,7 +50,17 @@ def get_subscription_with_id(subscription_id):
         if subscription["id"] == subscription_id:
             return jsonify(subscription), 200
     return jsonify({"error": "Subscription not found"}), 404
-    
+
+@app.route("/subscriptions/<int:subscription_id>", methods=["PUT"])
+def update_subscriptions(subscription_id):
+    data = request.get_json()
+    for subscription in subscriptions_list:
+        if subscription["id"] == subscription_id:
+            subscription["email"] = data.get("email",subscription["email"])
+            subscription["name"] = data.get("name",subscription["name"])
+            subscription["plan"] = data.get("plan",subscription["plan"])
+            return jsonify(subscription), 200
+    return jsonify({"error": "Subscription not found"}), 404    
 
 if __name__ == "__main__":
     app.run(debug=True)
