@@ -2,19 +2,27 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/")
-def main():
-    return "Main"
+subscriptions_list = []
+subscription_id = 1
 
-@app.route("/subscriptions/<subscription_id>")
-def get_subscription(subscription_id):
-    subscription_data = {
-        "id": subscription_id,
-        "email": "carmen.kilbourne@gmail.com",
-        "name": "Carmen",
-        "plan": "standard"
-    }
-    return jsonify(subscription_data), 200
+@app.route("/subscriptions", methods=["GET", "POST"])
+def subscriptions():
+    global subscription_id
+    
+    if request.method == "GET":
+        return jsonify(subscriptions_list), 200
+        
+    elif request.method == "POST":
+        data = request.get_json()
+        new_subscription = {
+            "id": subscription_id,
+            "email": data["email"],
+            "name": data["name"],
+            "plan": data["plan"]
+        }
+        subscription_id += 1
+        subscriptions_list.append(new_subscription)
+        return jsonify(new_subscription), 201
 
 if __name__ == "__main__":
     app.run(debug=True)
