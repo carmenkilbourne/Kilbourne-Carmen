@@ -16,13 +16,13 @@
 ## Decisions made
 I choose to put my subscription in a list instead of other structures like a dictionary or a class because its a structure that i find easy to iterate over and its good when there's a small amount of data.
 ## 🏁 Running the Project
-For running this project you need to have installed phyton.
+For running this project you need to have installed phyton. I recommend the use of the cmd not the powershell.
 To install dependencies 
 ```
 pip install -r requirements.txt
 ```
 ```
-flask run # For Flask
+python.exe main.py    
 ```
 to run tests use this command:
  ```
